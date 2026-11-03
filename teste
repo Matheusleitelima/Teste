@@ -1,0 +1,13 @@
+$inputPath = "COLE_AQUI_O_CAMINHO" `
+$chunkSize = 80MB `
+$buffer = New-Object byte[] $chunkSize `
+using($in = [System.IO.File]::OpenRead((Get-Item $inputPath).FullName)) { `
+    $i = 0 `
+    while(($read = $in.Read($buffer, 0, $buffer.Length)) -gt 0) { `
+        $out = [System.IO.File]::Create((Join-Path (Get-Item $inputPath).DirectoryName "parte_$i.txt")) `
+        $out.Write($buffer, 0, $read) `
+        $out.Close() `
+        Write-Host "Criado: parte_$i.txt" -ForegroundColor Green `
+        $i++ `
+    } `
+}
